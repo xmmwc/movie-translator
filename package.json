@@ -1,0 +1,15 @@
+{
+  "scripts": {
+    "test": "cross-env DEBUG=project:* babel-node test/decoder.test.js"
+  },
+  "devDependencies": {
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-stage-2": "^6.24.1",
+    "cross-env": "^5.2.0",
+    "debug": "^4.0.1"
+  },
+  "dependencies": {
+    "axios": "^0.18.0"
+  }
+}
