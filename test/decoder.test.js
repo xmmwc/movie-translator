@@ -1,5 +1,5 @@
 import debug from 'debug'
-import collectInfo from '../decoder'
+import collectInfo from '../src/decoder'
 const logDebug = debug('project:test')
 
 const movies = [
