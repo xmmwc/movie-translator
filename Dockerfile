@@ -1,6 +1,6 @@
 FROM node:8.9.4
 
-RUN apt-get update -y \
+RUN apt-get update \
   apt-get vim -y
 
 ENV REDIS_URL='localhost'
