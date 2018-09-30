@@ -7,8 +7,8 @@ const app = express()
 
 const port = process.env.SERVER_PORT || 19564
 
-app.get('/list', (req, res, next) => {
-  list()
+const getList = () => {
+  return list()
     .then(data => {
       return data.map(movie => {
         const info = decoder(movie.filename)
@@ -35,7 +35,23 @@ app.get('/list', (req, res, next) => {
           return movie
         }
       }))
+    }).then(movie => {
+      return movie.map(info => {
+        const name = info.cn_name || info.name
+        const year = info.year || ''
+        const quality = info.quality || ''
+        const res = info.res || ''
+        const rating = info.rating_average || 'none'
+        return {
+          ...info,
+          show_name: `[${rating}]${name}.${year}.${res}.${quality}`
+        }
+      })
     })
+}
+
+app.get('/list', (req, res, next) => {
+  getList()
     .then(movie => {
       res.json({
         data: movie,

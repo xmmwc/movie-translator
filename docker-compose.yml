@@ -1,10 +1,12 @@
 version: '3'
 services:
   web:
-    image: movie
+    image: movie:1.0.0
     ports:
     - "9800:19564"
     links:
     - redis
+    environment:
+    - REDIS_URL=redis
   redis:
     image: redis

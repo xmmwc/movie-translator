@@ -3,7 +3,7 @@ const isYear = keyword => {
   return match.test(keyword)
 }
 const isQuality = keyword => {
-  return ['brrip', 'bluray', 'web', 'hdrip'].indexOf(keyword) >= 0
+  return ['brrip', 'bluray', 'web', 'hdrip','webrip'].indexOf(keyword) >= 0
 }
 
 const isRes = keyword => {
