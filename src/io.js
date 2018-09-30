@@ -3,7 +3,8 @@ import axios from 'axios'
 
 export const ioFactory = baseURL => {
   const io = axios.create({
-    baseURL
+    baseURL,
+    timeout: 2000
   })
 
   io.interceptors.response.use(function(response) {

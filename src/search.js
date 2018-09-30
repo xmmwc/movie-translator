@@ -7,6 +7,7 @@ export default async name => {
   const movieFromCache = await getMovie(name)
   if (!movieFromCache) {
     try {
+      console.log('重新查询电影信息')
       const data = await io.get('search', {
         count: 1,
         q: name
@@ -22,6 +23,6 @@ export default async name => {
       console.error('查询电影失败:', e.message)
       return null
     }
-  }
+  }  
   return movieFromCache
 }
