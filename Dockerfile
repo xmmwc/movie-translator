@@ -1,7 +1,7 @@
 FROM node:8.9.4
 
-RUN apt-get update \
-  apt-get vim -y
+RUN apt-get update; \
+  apt-get install -y vim;
 
 ENV REDIS_URL='localhost'
 ENV REDIS_PORT='6379'
@@ -13,8 +13,8 @@ COPY ./package.json /usr/local/movie-translator/
 
 WORKDIR /usr/local/movie-translator/
 
-RUN npm install --unsafe-perm \
-  npm run build
+RUN npm install --unsafe-perm; \
+  npm run build;
 
 EXPOSE 19564 19564
 
