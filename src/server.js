@@ -5,7 +5,7 @@ import {list} from './source'
 
 const app = express()
 
-const port = 19564
+const port = process.env.SERVER_PORT
 
 app.get('/list', (req, res, next) => {
   list()
@@ -56,5 +56,5 @@ app.use((err, req, res, next) => {
 })
 
 app.listen(port, () => {
-  console.log('服务已启动')
+  console.log(`服务已启动[${port}]`)
 })

@@ -1,7 +1,7 @@
 import redis from 'ioredis'
 import sha1 from 'sha-1'
 
-const client = new redis('127.0.0.1', 6379, {
+const client = new redis(process.env.REDIS_URL, process.env.REDIS_PORT, {
   retryStrategy: false,
   maxRetriesPerRequest: 2
 })
