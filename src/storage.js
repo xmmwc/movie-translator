@@ -2,8 +2,8 @@ import redis from 'ioredis'
 import sha1 from 'sha-1'
 
 const client = new redis('127.0.0.1', 6379, {
-  enableReadyCheck: false,
-  retryStrategy: false
+  retryStrategy: false,
+  maxRetriesPerRequest: 2
 })
 
 client.on('error', err => {
