@@ -3,7 +3,7 @@ const isYear = keyword => {
   return match.test(keyword)
 }
 const isQuality = keyword => {
-  return ['brrip', 'bluray', 'web'].indexOf(keyword) >= 0
+  return ['brrip', 'bluray', 'web', 'hdrip'].indexOf(keyword) >= 0
 }
 
 const isRes = keyword => {
@@ -15,11 +15,11 @@ const isCodec = keyword => {
 }
 
 const isSound = keyword => {
-  return ['dd5', 'mp3', 'ac3', 'dts', 'acc'].indexOf(keyword) >= 0
+  return ['dd5', 'mp3', 'ac3', 'dts', 'acc', 'acc2', 'ddp5'].indexOf(keyword) >= 0
 }
 
 const isSoundNeedNext = keyword => {
-  return ['dd5', 'dts', 'hd', 'ma', '5', '7'].indexOf(keyword) >= 0 ? 'sound' : null
+  return ['dd5', 'dts', 'hd', 'ma', 'acc2', 'ddp5', '5', '7'].indexOf(keyword) >= 0 ? 'sound' : null
 }
 const isQualityNeedNext = keyword => {
   return ['web'].indexOf(keyword) >= 0 ? 'quality' : null
@@ -82,9 +82,9 @@ const collectInfo = name => {
         case 'sound':
           if (/1/.test(lowercaseKeyword)) {
             info.sound += `.${lowercaseKeyword}`
-          } else if(/hd/.test(lowercaseKeyword)){
+          } else if (/hd/.test(lowercaseKeyword)) {
             info.sound += `-${lowercaseKeyword}`
-          }else{
+          } else {
             info.sound += ` ${lowercaseKeyword}`
           }
 

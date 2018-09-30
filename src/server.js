@@ -5,7 +5,7 @@ import {list} from './source'
 
 const app = express()
 
-const port = process.env.SERVER_PORT
+const port = process.env.SERVER_PORT || 19564
 
 app.get('/list', (req, res, next) => {
   list()
@@ -48,7 +48,7 @@ app.get('/list', (req, res, next) => {
 })
 
 app.use((err, req, res, next) => {
-  console.error(err)
+  console.error(err.message)
   res.json({
     error: err.message,
     code: err.code || 0

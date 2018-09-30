@@ -1,9 +1,12 @@
 import redis from 'ioredis'
 import sha1 from 'sha-1'
 
-const client = new redis(process.env.REDIS_URL, process.env.REDIS_PORT, {
+const host = process.env.REDIS_URL || 'localhost'
+const port = process.env.REDIS_PORT || 6379
+
+const client = new redis(host, port, {
   retryStrategy: false,
-  maxRetriesPerRequest: 2
+  maxRetriesPerRequest: 5
 })
 
 client.on('error', err => {
