@@ -1,7 +1,7 @@
 version: '3'
 services:
   web:
-    build: https://github.com/xmmwc/movie-translator.git
+    image: movie
     ports:
     - "9800:19564"
     links:
