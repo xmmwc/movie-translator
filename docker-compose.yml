@@ -1,0 +1,10 @@
+version: '3'
+services:
+  web:
+    build: https://github.com/xmmwc/movie-translator.git
+    ports:
+    - "9800:19564"
+    links:
+    - redis
+  redis:
+    image: redis
