@@ -23,6 +23,7 @@ export default async name => {
       console.error('查询电影失败:', e.message)
       return null
     }
-  }  
+  }
   return movieFromCache
 }
+
