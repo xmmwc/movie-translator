@@ -1,7 +1,9 @@
 version: '3'
 services:
   web:
-    image: movie:1.0.0
+    build: ./
+    volumes:
+    - .:/app
     ports:
     - "9800:19564"
     links:
