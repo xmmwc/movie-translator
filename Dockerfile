@@ -6,12 +6,14 @@ ENV SERVER_PORT='19564'
 
 WORKDIR /app
 
-COPY package*.json /app
-COPY .babelrc /app
-COPY src /app/src/
+COPY package*.json .
 
-RUN npm install --unsafe-perm; \
-  npm run build;
+RUN npm install
+
+COPY .babelrc .
+COPY src ./src/
+
+RUN npm run build;
 
 EXPOSE 19564 19564
 

@@ -2,8 +2,6 @@ version: '3'
 services:
   web:
     build: ./
-    volumes:
-    - .:/app
     ports:
     - "9800:19564"
     links:
