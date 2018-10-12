@@ -41,10 +41,12 @@ const getList = () => {
         const year = info.year || ''
         const quality = info.quality || ''
         const res = info.res || ''
+        const author = info.author || ''
+        const sound = info.sound || ''
         const rating = info.rating_average || 'none'
         return {
           ...info,
-          show_name: `[${rating}]${name}.${year}.${res}.${quality}`
+          show_name: `[${rating}]${name}.${year}.${res}.${quality}.${sound}-${author}`
         }
       })
     })
