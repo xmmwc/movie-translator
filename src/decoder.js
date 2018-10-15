@@ -80,7 +80,7 @@ const collectInfo = name => {
     if (needNext) {
       switch (needNext) {
         case 'sound':
-          if (/1/.test(lowercaseKeyword)) {
+          if (/[0|1]/.test(lowercaseKeyword)) {
             info.sound += `.${lowercaseKeyword}`
           } else if (/hd/.test(lowercaseKeyword)) {
             info.sound += `-${lowercaseKeyword}`
