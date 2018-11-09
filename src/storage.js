@@ -4,10 +4,7 @@ import sha1 from 'sha-1'
 const host = process.env.REDIS_URL || 'localhost'
 const port = process.env.REDIS_PORT || 6379
 
-const client = new redis(host, port, {
-  retryStrategy: false,
-  maxRetriesPerRequest: 5
-})
+const client = new redis(port, host)
 
 client.on('error', err => {
   console.error(err.message)

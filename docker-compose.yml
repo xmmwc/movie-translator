@@ -3,10 +3,12 @@ services:
   web:
     build: ./
     ports:
-    - "9800:19564"
+    - "9800:19564"   
     links:
     - redis
     environment:
     - REDIS_URL=redis
+    network_mode: bridge
   redis:
     image: redis
+    network_mode: bridge
