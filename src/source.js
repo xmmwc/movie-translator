@@ -41,8 +41,8 @@ const isTokenEx = () => {
 export const list = () => {
   return apiGet({
     mode: 'list',
-    category: 44,
-    min_seeders: 1200
+    category: '42;44;46;50',
+    min_seeders: 500
   }).then(data => {
     if (data.torrent_results)
       return data.torrent_results

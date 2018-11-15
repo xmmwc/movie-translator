@@ -1,5 +1,5 @@
 import express from 'express'
-import decoder from './decoder'
+import decoder, {getFileName} from './decoder'
 import search from './search'
 import {list} from './source'
 
@@ -12,19 +12,23 @@ const getList = () => {
     .then(data => {
       return data.map(movie => {
         const info = decoder(movie.filename)
+
         return {
           ...info,
           origin_title: movie.filename,
+
           link: movie.download
         }
       })
     }).then(movieInfo => {
       return Promise.all(movieInfo.map(async movie => {
-        const subject = await search(movie.name)
+        const subject = await search(movie.name, false)
         if (subject) {
+          const filename = getFileName(movie.origin_title)
           return {
             ...movie,
             cn_name: subject.title,
+            cn_title: movie.origin_title.replace(filename, subject.title),
             rating_average: subject.rating.average,
             rating_star: subject.rating.star,
             subject_year: subject.year,
@@ -37,16 +41,10 @@ const getList = () => {
       }))
     }).then(movie => {
       return movie.map(info => {
-        const name = info.cn_name || info.name
-        const year = info.year || ''
-        const quality = info.quality || ''
-        const res = info.res || ''
-        const author = info.author || ''
-        const sound = info.sound || ''
         const rating = info.rating_average || 'none'
         return {
           ...info,
-          show_name: `[${rating}]${name}.${year}.${res}.${quality}.${sound}-${author}`
+          show_name: `[${rating}]${info.cn_title}`
         }
       })
     })

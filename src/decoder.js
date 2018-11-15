@@ -25,6 +25,24 @@ const isQualityNeedNext = keyword => {
   return ['web'].indexOf(keyword) >= 0 ? 'quality' : null
 }
 
+export const getFileName = name => {
+  const nameSplit = name.split('.')
+  let filenames = []
+  for (const [index, keyword] of nameSplit.entries()) {
+    const lowercaseKeyword = keyword.toLowerCase()
+    if (isYear(lowercaseKeyword) ||
+      isQuality(lowercaseKeyword) ||
+      isRes(lowercaseKeyword) ||
+      isSound(lowercaseKeyword) ||
+      isCodec(lowercaseKeyword)) {
+      return filenames.join('.')
+    } else {
+      filenames.push(keyword)
+    }
+  }
+  return ''
+}
+
 
 const collectInfo = name => {
   const nameSplit = name.replace(/-/g, '.').split('.')
