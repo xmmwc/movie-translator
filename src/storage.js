@@ -1,11 +1,11 @@
 import redis from 'ioredis'
 import sha1 from 'sha-1'
-import {useCache} from './config'
+import config from './config'
 
 const host = process.env.REDIS_URL || 'localhost'
 const port = process.env.REDIS_PORT || 6379
 
-if (useCache) {
+if (config.useCache) {
   const client = new redis(port, host)
 
   client.on('error', err => {
@@ -15,7 +15,7 @@ if (useCache) {
 
 
 export const getMovie = name => {
-  if (useCache) {
+  if (config.useCache) {
     const id = sha1(name)
     return new Promise(resolve => {
       client.get(id, (err, result) => {
@@ -34,7 +34,7 @@ export const getMovie = name => {
 }
 
 export const setMovie = (name, movie, exTime = 12 * 60 * 60) => {
-  if (useCache) {
+  if (config.useCache) {
     const id = sha1(name)
     return new Promise((resolve, reject) => {
       try {
