@@ -16,7 +16,6 @@ const getList = () => {
         return {
           ...info,
           origin_title: movie.filename,
-
           link: movie.download
         }
       })

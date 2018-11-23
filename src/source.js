@@ -8,7 +8,7 @@ let token_time = null
 const apiGet = (param = {}) => {
   if (isTokenEx()) {
     return io.get('/pubapi_v2.php', {...param, token, app_id}).then(data => {
-      if (data.error && data.error_code === 4) {
+      if (data.error || data.error_code === 4 || !data.torrent_results) {
         return getToken().then(() => apiGet(param))
       }
       return data
@@ -18,7 +18,6 @@ const apiGet = (param = {}) => {
 }
 
 const getToken = async () => {
-
   const data = await io.get('/pubapi_v2.php', {
     get_token: 'get_token',
     app_id
@@ -44,8 +43,6 @@ export const list = () => {
     category: '42;44;46;50',
     min_seeders: 500
   }).then(data => {
-    if (data.torrent_results)
-      return data.torrent_results
-    return []
+    return data.torrent_results
   })
 }
