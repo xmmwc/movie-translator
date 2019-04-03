@@ -7,7 +7,8 @@ ENV SERVER_PORT='19564'
 WORKDIR /app
 
 COPY package*.json .
-COPY node_modules .
+
+RUN npm install
 
 COPY .babelrc .
 COPY src ./src/
