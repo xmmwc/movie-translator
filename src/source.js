@@ -11,9 +11,11 @@ const apiGet = (param = {}) => {
       if (data.error || data.error_code === 4 || !data.torrent_results) {
         return getToken().then(() => apiGet(param))
       }
+      console.log(`成功查询到${data.torrent_results.length}跳电影记录！`)
       return data
     })
   }
+  console.log('token超时！')
   return getToken().then(() => apiGet(param))
 }
 
