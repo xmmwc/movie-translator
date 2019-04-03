@@ -6,9 +6,8 @@ ENV SERVER_PORT='19564'
 
 WORKDIR /app
 
-RUN yarn config set registry 'http://registry.npm.taobao.org'
-
 COPY package*.json .
+COPY yarn.lock .
 
 RUN yarn
 
