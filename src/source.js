@@ -7,7 +7,7 @@ let token_time = null
 
 const apiGet = (param = {}) => {
   if (isTokenEx()) {
-    return io.get('/pubapi_v2.php', {...param, token, app_id}).then(data => {
+    return io.get('/pubapi_v2.php', { ...param, token, app_id }).then(data => {
       if (data.error || data.error_code === 4 || !data.torrent_results) {
         return getToken().then(() => apiGet(param))
       }
@@ -40,7 +40,7 @@ const isTokenEx = () => {
 export const list = () => {
   return apiGet({
     mode: 'list',
-    category: '42;44;46;50',
+    category: '42;46',
     min_seeders: 500
   }).then(data => {
     return data.torrent_results
