@@ -8,12 +8,12 @@ WORKDIR /app
 
 COPY package*.json .
 
-RUN npm install
+RUN yarn
 
 COPY .babelrc .
 COPY src ./src/
 
-RUN npm run build;
+RUN yarn build;
 
 EXPOSE 19564 19564
 
