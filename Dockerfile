@@ -7,9 +7,7 @@ ENV SERVER_PORT='19564'
 WORKDIR /app
 
 COPY package*.json .
-COPY yarn.lock .
-
-RUN yarn
+COPY node_modules .
 
 COPY .babelrc .
 COPY src ./src/
