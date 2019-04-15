@@ -23,7 +23,7 @@ const getMovieByRate = movies => {
     }
   })
   const topMovie = _.maxBy(movieWithRate, movie => movie.rate)
-  return topMovie
+  return topMovie.movie
 }
 
 const getList = () => {

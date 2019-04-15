@@ -14,7 +14,7 @@ const apiGet = (param = {}) => {
           torrent_results: []
         }
       }
-      console.log(`成功查询到${data.torrent_results.length}跳电影记录！`)
+      console.log(`成功查询到${data.torrent_results.length}条电影记录！`)
       return data
     })
   }
