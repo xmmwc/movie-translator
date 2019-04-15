@@ -7,16 +7,16 @@ export const ioFactory = baseURL => {
     timeout: 6000
   })
 
-  io.interceptors.response.use(function(response) {
+  io.interceptors.response.use(function (response) {
     return response.data
-  }, function(error) {
+  }, function (error) {
     return Promise.reject(error)
   })
 
   const get = (url, data) => io({
     url,
     params: data,
-    paramsSerializer: function(params) {
+    paramsSerializer: function (params) {
       return qs.stringify(params)
     }
   })
@@ -37,7 +37,7 @@ export const ioFactory = baseURL => {
     method: 'POST',
     url,
     params: data,
-    paramsSerializer: function(params) {
+    paramsSerializer: function (params) {
       return qs.stringify(params)
     }
   })

@@ -1,5 +1,5 @@
 import ioFactory from './io'
-import {getMovie, setMovie} from './storage'
+import { getMovie, setMovie } from './storage'
 import config from './config'
 
 const io = ioFactory('https://api.douban.com/v2/movie/')
@@ -31,4 +31,3 @@ export default async (name) => {
   }
   return null
 }
-

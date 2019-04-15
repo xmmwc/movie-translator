@@ -1,4 +1,3 @@
-import {list} from '../src/source'
+import { list } from '../src/source'
 
-
-list().then(data => console.log(data)).catch(err=>console.error(err))
+list().then(data => console.log(data)).catch(err => console.error(err))

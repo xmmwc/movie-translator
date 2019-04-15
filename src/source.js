@@ -1,14 +1,14 @@
 import ioFactory from './io'
 
 const io = ioFactory('https://torrentapi.org')
-const app_id = 'xmmmovie'
+const appId = 'xmmmovie'
 let token = null
-let token_time = null
+let tokenTime = null
 
 const apiGet = (param = {}) => {
   if (isTokenEx()) {
     console.log('开始获取电影！')
-    return io.get('/pubapi_v2.php', { ...param, token, app_id }).then(data => {
+    return io.get('/pubapi_v2.php', { ...param, token, app_id: appId }).then(data => {
       if (data.error || data.error_code === 4 || !data.torrent_results) {
         return {
           torrent_results: []
@@ -25,18 +25,18 @@ const apiGet = (param = {}) => {
 const getToken = async () => {
   const data = await io.get('/pubapi_v2.php', {
     get_token: 'get_token',
-    app_id
+    app_id: appId
   })
   token = data.token
-  token_time = new Date().getTime()
-  console.log('重新获取token:', token, token_time)
+  tokenTime = new Date().getTime()
+  console.log('重新获取token:', token, tokenTime)
   return token
 }
 
 const isTokenEx = () => {
-  if (token && token_time) {
+  if (token && tokenTime) {
     const now = new Date().getTime()
-    const distance = token_time - now
+    const distance = tokenTime - now
     return distance < 12 * 60 * 1000
   }
   return false

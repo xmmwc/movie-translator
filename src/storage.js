@@ -1,4 +1,4 @@
-import redis from 'ioredis'
+import Redis from 'ioredis'
 import sha1 from 'sha-1'
 import config from './config'
 
@@ -7,13 +7,12 @@ const port = process.env.REDIS_PORT || 6379
 
 let client = null
 if (config.useCache) {
-  client = new redis(port, host)
+  client = new Redis(port, host)
 
   client.on('error', err => {
     console.error(err.message)
   })
 }
-
 
 export const getMovie = name => {
   if (config.useCache && client) {

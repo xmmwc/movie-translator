@@ -28,7 +28,7 @@ const isQualityNeedNext = keyword => {
 export const getFileName = name => {
   const nameSplit = name.split('.')
   let filenames = []
-  for (const [index, keyword] of nameSplit.entries()) {
+  for (const keyword of nameSplit) {
     const lowercaseKeyword = keyword.toLowerCase()
     if (isYear(lowercaseKeyword) ||
       isQuality(lowercaseKeyword) ||
@@ -42,7 +42,6 @@ export const getFileName = name => {
   }
   return ''
 }
-
 
 const collectInfo = name => {
   const nameSplit = name.replace(/-/g, '.').split('.')

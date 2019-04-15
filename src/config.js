@@ -1,3 +1,4 @@
 export default {
-  useCache: true
+  useCache: true,
+  movieRate: ['REMUX', 'TrueHD', 'DTS-HD', 'Atmos']
 }

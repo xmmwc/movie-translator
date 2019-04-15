@@ -1,22 +1,50 @@
+import _ from 'lodash'
 import express from 'express'
-import decoder, {getFileName} from './decoder'
 import search from './search'
-import {list} from './source'
+import config from './config'
+import decoder, { getFileName } from './decoder'
+import { list } from './source'
 
 const app = express()
 
 const port = process.env.SERVER_PORT || 19564
+
+const getMovieByRate = movies => {
+  const movieWithRate = movies.map(movie => {
+    const rate = config.movieRate.reduce((total, value) => {
+      if (movie.origin_title.indexOf(value)) {
+        total++
+      }
+      return total
+    }, 0)
+    return {
+      rate,
+      movie
+    }
+  })
+  const topMovie = _.maxBy(movieWithRate, movie => movie.rate)
+  return topMovie
+}
 
 const getList = () => {
   return list()
     .then(data => {
       return data.map(movie => {
         const info = decoder(movie.filename)
-
         return {
           ...info,
           origin_title: movie.filename,
           link: movie.download
+        }
+      })
+    }).then(movieList => {
+      const groupedMovies = _.groupBy(movieList, movie => movie.name)
+      return Object.keys(groupedMovies).map(key => {
+        const movieShop = groupedMovies[key]
+        if (movieShop.length === 1) {
+          return movieShop[0]
+        } else {
+          return getMovieByRate(movieShop)
         }
       })
     }).then(movieInfo => {

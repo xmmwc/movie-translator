@@ -6,10 +6,10 @@
     "test": "cross-env DEBUG=project:* babel-node test/decoder.test.js"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.7.0",
     "babel-preset-stage-2": "^6.24.1",
-    "babel-cli": "^6.26.0",
     "cross-env": "^5.2.0",
     "debug": "^4.0.1"
   },
@@ -17,6 +17,7 @@
     "axios": "^0.18.0",
     "express": "^4.16.3",
     "ioredis": "^4.0.0",
+    "lodash": "^4.17.11",
     "sha-1": "^0.1.1"
   },
   "license": "MIT"
