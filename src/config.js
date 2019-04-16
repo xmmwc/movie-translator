@@ -1,5 +1,5 @@
 export default {
-  useCache: false,
+  useCache: true,
   movieRate: [{
     key: 'REMUX',
     rate: 1

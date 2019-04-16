@@ -74,6 +74,8 @@ const getList = () => {
           show_name: `[${rating}]${info.cn_title}`
         }
       })
+    }).then(movie => {
+      return _.orderBy(movie, ['rating_average'], ['desc'])
     })
 }
 
