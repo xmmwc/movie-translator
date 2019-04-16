@@ -12,8 +12,8 @@ const port = process.env.SERVER_PORT || 19564
 const getMovieByRate = movies => {
   const movieWithRate = movies.map(movie => {
     const rate = config.movieRate.reduce((total, value) => {
-      if (movie.origin_title.indexOf(value)) {
-        total++
+      if (movie.origin_title.indexOf(value.key)) {
+        total += value.rate
       }
       return total
     }, 0)
