@@ -14,20 +14,22 @@ export default async (name) => {
   try {
     console.log('重新查询电影信息')
     const data = await io.get('search', {
-      count: 1,
-      q: name
+      q: name,
+      start: 0
     })
     if (data.total > 0) {
       const movie = data.subjects[0]
-      if (config.useCache) {
-        await setMovie(name, movie).catch(e => {
-          console.error('缓存电影失败:', e.message)
-        })
+      if (movie) {
+        if (config.useCache) {
+          await setMovie(name, movie).catch(e => {
+            console.error('缓存电影失败:', e.message)
+          })
+        }
+        return movie
       }
-      return movie
     }
+    throw new Error('没找到')
   } catch (e) {
     console.error('查询电影失败:', e.message)
   }
-  return null
 }

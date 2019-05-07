@@ -26,7 +26,7 @@ const getMovieByRate = movies => {
   return topMovie.movie
 }
 
-const getList = () => {
+export const getList = () => {
   return list()
     .then(data => {
       return data.map(movie => {
@@ -49,7 +49,7 @@ const getList = () => {
       })
     }).then(movieInfo => {
       return Promise.all(movieInfo.map(async movie => {
-        const subject = await search(movie.name, false)
+        const subject = await search(movie.name)
         if (subject) {
           const filename = getFileName(movie.origin_title)
           return {
@@ -57,7 +57,7 @@ const getList = () => {
             cn_name: subject.title,
             cn_title: movie.origin_title.replace(filename, subject.title),
             rating_average: subject.rating.average,
-            rating_star: subject.rating.star,
+            rating_star: subject.rating.stars,
             subject_year: subject.year,
             image: subject.images,
             douban_id: subject.id
@@ -68,7 +68,7 @@ const getList = () => {
       }))
     }).then(movie => {
       return movie.map(info => {
-        const rating = info.rating_average || 'none'
+        const rating = _.isUndefined(info.rating_average) ? 0 : info.rating_average
         return {
           ...info,
           show_name: `[${rating}]${info.cn_title}`

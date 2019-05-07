@@ -1,5 +1,5 @@
 import search from '../src/search'
 
-search('Hotel.Artemis').then(movie => {
+search('flower and snake zero').then(movie => {
   console.log(movie)
 }).catch(err => console.error(err))
