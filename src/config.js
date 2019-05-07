@@ -10,6 +10,9 @@ export default {
     key: 'DTS-HD',
     rate: 1
   }, {
+    key: 'BluRay',
+    rate: 1
+  }, {
     key: 'Atmos',
     rate: 1
   }, {
@@ -19,6 +22,9 @@ export default {
     key: '5.1',
     rate: 1
   }, {
+    key: '7.1',
+    rate: 1
+  }, {
     key: '10bit',
     rate: 1
   }, {
@@ -26,6 +32,12 @@ export default {
     rate: 1
   }, {
     key: '3D',
+    rate: -1
+  }, {
+    key: 'WEBRip',
+    rate: -1
+  }, {
+    key: '2.0',
     rate: -1
   }]
 }
