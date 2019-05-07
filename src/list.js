@@ -72,6 +72,6 @@ export const getList = () => {
         }
       })
     }).then(movie => {
-      return _.orderBy(movie, ['rating_average', 'group_rate'], ['desc', 'desc'])
+      return _.orderBy(movie, ['group_rate', 'rating_average'], ['desc', 'desc'])
     })
 }
