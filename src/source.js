@@ -46,8 +46,7 @@ export const list = () => {
   return apiGet({
     mode: 'list',
     category: '42;46;44',
-    min_seeders: 50,
-    min_leechers: 50
+    min_leechers: 100
   }).then(data => {
     return data.torrent_results
   })
