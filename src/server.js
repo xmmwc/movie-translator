@@ -1,13 +1,13 @@
 
 import express from 'express'
-import { getList } from './list'
+import { getListByTMDb } from './list'
 
 const app = express()
 
 const port = process.env.SERVER_PORT || 19564
 
 app.get('/list', (req, res, next) => {
-  getList()
+  getListByTMDb()
     .then(movie => {
       res.json({
         data: movie,

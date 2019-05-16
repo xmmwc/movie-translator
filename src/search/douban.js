@@ -1,10 +1,10 @@
-import ioFactory from './io'
-import { getMovie, setMovie } from './storage'
-import config from './config'
+import ioFactory from '../io'
+import { getMovie, setMovie } from '../storage'
+import config from '../config'
 
 const io = ioFactory('https://api.douban.com/v2/movie/')
 
-export default async (name) => {
+const search = async (name) => {
   if (config.useCache) {
     const movieFromCache = await getMovie(name)
     if (movieFromCache) {
@@ -33,3 +33,5 @@ export default async (name) => {
     console.error('查询电影失败:', e.message)
   }
 }
+
+export default search

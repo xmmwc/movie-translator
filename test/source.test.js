@@ -1,4 +1,4 @@
 // import { list } from '../src/source'
-import { getList } from '../src/list'
+import { getListByTMDb } from '../src/list'
 
-getList().then(data => console.log(data)).catch(err => console.error(err))
+getListByTMDb().then(data => console.log(data)).catch(err => console.error(err))
