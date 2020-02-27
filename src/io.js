@@ -3,6 +3,7 @@ import axios from 'axios'
 
 export const ioFactory = baseURL => {
   const proxyHost = process.env.PROXY_HOST || false
+  const socksProxyHost = process.env.SOCKS_PROXY_HOST || false
   const proxyPort = process.env.PROXY_PORT || 1086
   const option = {
     baseURL,
@@ -13,6 +14,10 @@ export const ioFactory = baseURL => {
       host: proxyHost,
       port: proxyPort
     }
+  } else if (socksProxyHost) {
+    const SocksProxyAgent = require('socks-proxy-agent')
+    const socksUrl = `socks://${socksProxyHost}:${proxyPort}`
+    option.httpsAgent = new SocksProxyAgent(socksUrl)
   }
   const io = axios.create(option)
 

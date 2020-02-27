@@ -1,6 +1,6 @@
 {
   "description": "movie-translator",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "scripts": {
     "start": "node dist/server.js",
     "build": "babel src -d dist",
@@ -19,7 +19,8 @@
     "express": "^4.17.1",
     "ioredis": "^4.16.0",
     "lodash": "^4.17.15",
-    "sha-1": "^0.1.1"
+    "sha-1": "^0.1.1",
+    "socks-proxy-agent": "^5.0.0"
   },
   "license": "MIT"
 }
