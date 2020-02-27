@@ -54,7 +54,7 @@ const search = async name => {
     }
     throw new Error('没找到')
   } catch (e) {
-    console.error('查询电影失败:', e.message)
+    throw new Error(`查询电影失败: ${e.message}`)
   }
 }
 
