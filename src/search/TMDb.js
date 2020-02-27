@@ -36,23 +36,27 @@ const search = async name => {
   }
   try {
     console.log('重新查询电影信息')
-    const data = await io.get('search/movie', {
-      query: name,
-      language: 'zh-CN',
-      api_key: config.apiKey.TMDb
-    })
-    if (data.total_results > 0) {
-      const movie = data.results[0]
-      if (movie) {
-        if (config.useCache) {
-          await setMovie(name, movie).catch(e => {
-            console.error('缓存电影失败:', e.message)
-          })
+    const apiKey = config.apiKey.TMDb
+    if (apiKey) {
+      const data = await io.get('search/movie', {
+        query: name,
+        language: 'zh-CN',
+        api_key: apiKey
+      })
+      if (data.total_results > 0) {
+        const movie = data.results[0]
+        if (movie) {
+          if (config.useCache) {
+            await setMovie(name, movie).catch(e => {
+              console.error('缓存电影失败:', e.message)
+            })
+          }
+          return movie
         }
-        return movie
       }
+      console.log('没找到电影信息')
     }
-    console.log('没找到电影信息')
+
     return null
   } catch (e) {
     console.log(`查询电影信息失败:${e.message}`)

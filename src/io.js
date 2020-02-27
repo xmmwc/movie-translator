@@ -7,7 +7,7 @@ export const ioFactory = baseURL => {
   const proxyPort = process.env.PROXY_PORT || 1086
   const option = {
     baseURL,
-    timeout: 1500
+    timeout: 5000
   }
   if (proxyHost) {
     option.proxy = {
