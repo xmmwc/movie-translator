@@ -2,10 +2,19 @@ import qs from 'querystring'
 import axios from 'axios'
 
 export const ioFactory = baseURL => {
-  const io = axios.create({
+  const proxyHost = process.env.PROXY_HOST || false
+  const proxyPort = process.env.PROXY_PORT || 1086
+  const option = {
     baseURL,
     timeout: 1500
-  })
+  }
+  if (proxyHost) {
+    option.proxy = {
+      host: proxyHost,
+      port: proxyPort
+    }
+  }
+  const io = axios.create(option)
 
   io.interceptors.response.use(function (response) {
     return response.data
