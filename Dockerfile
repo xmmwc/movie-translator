@@ -1,4 +1,4 @@
-FROM node:10.16.3
+FROM node:12.16.1
 
 ENV REDIS_URL='localhost'
 ENV REDIS_PORT='6379'
