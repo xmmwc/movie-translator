@@ -28,8 +28,10 @@ const search = async (name) => {
         return movie
       }
     }
+    console.log('没找到电影信息')
     return null
   } catch (e) {
+    console.log(`查询电影信息失败:${e.message}`)
     return null
   }
 }
