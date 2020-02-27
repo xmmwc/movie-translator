@@ -16,7 +16,7 @@ export const ioFactory = baseURL => {
     }
   } else if (socksProxyHost) {
     const SocksProxyAgent = require('socks-proxy-agent')
-    const socksUrl = `socks://${socksProxyHost}:${proxyPort}`
+    const socksUrl = `socks5://${socksProxyHost}:${proxyPort}`
     option.httpsAgent = new SocksProxyAgent(socksUrl)
   }
   const io = axios.create(option)
