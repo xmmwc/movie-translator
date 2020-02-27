@@ -47,10 +47,7 @@ export const getListByDounban = () => {
           rating_average: 0
         }
       }
-    })).catch(err => {
-      console.error(err)
-      return []
-    })
+    }))
   }).then(movie => {
     return movie.map(info => {
       const showName = _.isUndefined(info.rating_average) ? info.origin_title : `[${info.rating_average}]${info.cn_title}`
@@ -86,10 +83,7 @@ export const getListByTMDb = () => {
           rating_average: 0
         }
       }
-    })).catch(err => {
-      console.error(err)
-      return []
-    })
+    }))
   }).then(movie => {
     return movie.map(info => {
       const showName = _.isUndefined(info.rating_average) ? info.origin_title : `[${info.rating_average}]${info.cn_title}`

@@ -52,9 +52,9 @@ const search = async name => {
         return movie
       }
     }
-    throw new Error('没找到')
+    return null
   } catch (e) {
-    throw new Error(`查询电影失败: ${e.message}`)
+    return null
   }
 }
 
