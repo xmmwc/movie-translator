@@ -50,7 +50,7 @@ export const getListByDounban = () => {
     }))
   }).then(movie => {
     return movie.map(info => {
-      const showName = _.isUndefined(info.rating_average) ? info.origin_title : `[${info.rating_average}]${info.cn_title}`
+      const showName = _.isUndefined(info.cn_title) ? info.origin_title : `[${info.rating_average}]${info.cn_title}`
       return {
         ...info,
         show_name: showName
@@ -86,7 +86,7 @@ export const getListByTMDb = () => {
     }))
   }).then(movie => {
     return movie.map(info => {
-      const showName = _.isUndefined(info.rating_average) ? info.origin_title : `[${info.rating_average}]${info.cn_title}`
+      const showName = _.isUndefined(info.cn_title) ? info.origin_title : `[${info.rating_average}]${info.cn_title}`
       return {
         ...info,
         show_name: showName
