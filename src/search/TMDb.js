@@ -2,7 +2,7 @@ import ioFactory from '../io'
 import config from '../config'
 import { getMovie, setMovie } from '../storage'
 
-const io = ioFactory('https://api.themoviedb.org/3/')
+const io = ioFactory('https://api.themoviedb.org/3/', true)
 
 /**
  * @typedef TMDbMovie

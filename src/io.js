@@ -1,7 +1,7 @@
 import qs from 'querystring'
 import axios from 'axios'
 
-export const ioFactory = baseURL => {
+export const ioFactory = (baseURL, useProxy = false) => {
   const proxyHost = process.env.PROXY_HOST || false
   const socksProxyHost = process.env.SOCKS_PROXY_HOST || false
   const proxyPort = process.env.PROXY_PORT || 1086
@@ -9,18 +9,20 @@ export const ioFactory = baseURL => {
     baseURL,
     timeout: 5000
   }
-  if (proxyHost) {
-    option.proxy = {
-      host: proxyHost,
-      port: proxyPort
+  if (useProxy) {
+    if (proxyHost) {
+      option.proxy = {
+        host: proxyHost,
+        port: proxyPort
+      }
+    } else if (socksProxyHost) {
+      const SocksProxyAgent = require('socks-proxy-agent')
+      const socksUrl = `socks5://${socksProxyHost}:${proxyPort}`
+      option.httpsAgent = new SocksProxyAgent(socksUrl)
     }
-  } else if (socksProxyHost) {
-    const SocksProxyAgent = require('socks-proxy-agent')
-    const socksUrl = `socks5://${socksProxyHost}:${proxyPort}`
-    option.httpsAgent = new SocksProxyAgent(socksUrl)
   }
-  const io = axios.create(option)
 
+  const io = axios.create(option)
   io.interceptors.response.use(function (response) {
     return response.data
   }, function (error) {
