@@ -44,7 +44,7 @@ export const getFileName = name => {
 }
 
 const collectInfo = name => {
-  const nameSplit = name.replace(/-/g, '.').split('.')
+  const nameSplit = name.replace(/-/g, '.').split('.') || []
   const info = {}
   let needNext = null
   let nameDone = false
