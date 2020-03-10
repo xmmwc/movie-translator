@@ -23,6 +23,7 @@ app.use((err, req, res, next) => {
   console.error(err.message)
   res.json({
     error: err.message,
+    detail: err.stack,
     code: err.code || 0
   })
 })

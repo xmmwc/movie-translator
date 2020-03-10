@@ -15,39 +15,41 @@ if (config.useCache) {
 }
 
 export const getMovie = name => {
-  if (config.useCache && client) {
-    const id = sha1(name)
-    return new Promise(resolve => {
-      client.get(id, (err, result) => {
-        if (err) return resolve(null)
-        try {
-          result = JSON.parse(result)
-          resolve(result)
-        } catch (e) {
-          return resolve(null)
-        }
+  if (name) {
+    if (config.useCache && client) {
+      const id = sha1(name)
+      return new Promise(resolve => {
+        client.get(id, (err, result) => {
+          if (err) return resolve(null)
+          try {
+            result = JSON.parse(result)
+            resolve(result)
+          } catch (e) {
+            return resolve(null)
+          }
+        })
       })
-    })
-  } else {
-    return Promise.resolve(null)
+    }
   }
+  return Promise.resolve(null)
 }
 
 export const setMovie = (name, movie, exTime = 12 * 60 * 60) => {
-  if (config.useCache && client) {
-    const id = sha1(name)
-    return new Promise((resolve, reject) => {
-      try {
-        const value = JSON.stringify(movie)
-        client.set(id, value, 'ex', exTime, (err, result) => {
-          if (err) return reject(err)
-          resolve(result)
-        })
-      } catch (e) {
-        reject(e)
-      }
-    })
-  } else {
-    return Promise.resolve(null)
+  if (name) {
+    if (config.useCache && client) {
+      const id = sha1(name)
+      return new Promise((resolve, reject) => {
+        try {
+          const value = JSON.stringify(movie)
+          client.set(id, value, 'ex', exTime, (err, result) => {
+            if (err) return reject(err)
+            resolve(result)
+          })
+        } catch (e) {
+          reject(e)
+        }
+      })
+    }
   }
+  return Promise.resolve(null)
 }
