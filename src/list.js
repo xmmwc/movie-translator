@@ -101,7 +101,7 @@ export const getListByRate = () => {
   return list()
     .then(data => {
       return data.map(movie => {
-        const info = decoder(movie.filename)
+        const info = decoder(movie.filename || '')
         return {
           ...info,
           origin_title: movie.filename,
