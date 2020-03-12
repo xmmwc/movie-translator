@@ -8,7 +8,7 @@ WORKDIR /app
 
 COPY package*.json .
 
-RUN npm install
+RUN yarn
 
 COPY .babelrc .
 COPY src ./src/

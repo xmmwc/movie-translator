@@ -14,10 +14,10 @@ if (config.useCache) {
   })
 }
 
-export const getMovie = name => {
+export const getValue = (name, prefix = 'movie') => {
   if (name) {
     if (config.useCache && client) {
-      const id = sha1(name)
+      const id = sha1(prefix + '_' + name)
       return new Promise(resolve => {
         client.get(id, (err, result) => {
           if (err) return resolve(null)
@@ -34,10 +34,10 @@ export const getMovie = name => {
   return Promise.resolve(null)
 }
 
-export const setMovie = (name, movie, exTime = 12 * 60 * 60) => {
+export const setValue = (name, movie, exTime = 12 * 60 * 60, prefix = 'movie') => {
   if (name) {
     if (config.useCache && client) {
-      const id = sha1(name)
+      const id = sha1(prefix + '_' + name)
       return new Promise((resolve, reject) => {
         try {
           const value = JSON.stringify(movie)

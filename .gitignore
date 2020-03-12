@@ -4,6 +4,8 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+src/config.js
+
 # Editor directories and files
 jsconfig.json
 .idea

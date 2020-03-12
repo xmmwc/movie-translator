@@ -1,6 +1,6 @@
 import ioFactory from '../io'
 import config from '../config'
-import { getMovie, setMovie } from '../storage'
+import { getValue, setValue } from '../storage'
 
 const io = ioFactory('https://api.themoviedb.org/3/', true)
 
@@ -29,32 +29,34 @@ const io = ioFactory('https://api.themoviedb.org/3/', true)
  */
 const search = async name => {
   if (config.useCache) {
-    const movieFromCache = await getMovie(name)
+    const movieFromCache = await getValue(name)
     if (movieFromCache) {
       return movieFromCache
     }
   }
   try {
     console.log('重新查询电影信息')
-    const apiKey = config.apiKey.TMDb
-    if (apiKey) {
-      const data = await io.get('search/movie', {
-        query: name,
-        language: 'zh-CN',
-        api_key: apiKey
-      })
-      if (data.total_results > 0) {
-        const movie = data.results[0]
-        if (movie) {
-          if (config.useCache) {
-            await setMovie(name, movie).catch(e => {
-              console.error('缓存电影失败:', e.message)
-            })
+    if (config.apiKey) {
+      const apiKey = config.apiKey.TMDb
+      if (apiKey) {
+        const data = await io.get('search/movie', {
+          query: name,
+          language: 'zh-CN',
+          api_key: apiKey
+        })
+        if (data.total_results > 0) {
+          const movie = data.results[0]
+          if (movie) {
+            if (config.useCache) {
+              await setValue(name, movie).catch(e => {
+                console.error('缓存电影失败:', e.message)
+              })
+            }
+            return movie
           }
-          return movie
         }
+        console.log('没找到电影信息')
       }
-      console.log('没找到电影信息')
     }
     return null
   } catch (e) {

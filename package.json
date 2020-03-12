@@ -1,9 +1,10 @@
 {
   "description": "movie-translator",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "scripts": {
     "start": "node dist/server.js",
     "build": "babel src -d dist",
+    "dev": "cross-env SOCKS_PROXY_HOST=localhost babel-node src/server.js",
     "test": "cross-env DEBUG=project:* babel-node test/decoder.test.js"
   },
   "devDependencies": {

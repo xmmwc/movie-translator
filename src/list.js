@@ -5,7 +5,7 @@ import config from './config'
 import decoder, { getFileName } from './decoder'
 import { list } from './source'
 
-export const getMovieByRate = movies => {
+export const getValueByRate = movies => {
   const movieWithRate = movies.map(movie => {
     const rate = config.movieRate.reduce((total, value) => {
       if (new RegExp(`${value.key}`).test(movie.origin_title)) {
@@ -112,7 +112,7 @@ export const getListByRate = () => {
       const groupedMovies = _.groupBy(movieList, movie => movie.name)
       return Object.keys(groupedMovies).map(key => {
         const movieShop = groupedMovies[key]
-        return getMovieByRate(movieShop)
+        return getValueByRate(movieShop)
       })
     })
 }

@@ -1,12 +1,12 @@
 import ioFactory from '../io'
-import { getMovie, setMovie } from '../storage'
+import { getValue, setValue } from '../storage'
 import config from '../config'
 
 const io = ioFactory('https://api.douban.com/v2/movie/')
 
 const search = async (name) => {
   if (config.useCache) {
-    const movieFromCache = await getMovie(name)
+    const movieFromCache = await getValue(name)
     if (movieFromCache) {
       return movieFromCache
     }
@@ -21,7 +21,7 @@ const search = async (name) => {
       const movie = data.subjects[0]
       if (movie) {
         if (config.useCache) {
-          await setMovie(name, movie).catch(e => {
+          await setValue(name, movie).catch(e => {
             console.error('缓存电影失败:', e.message)
           })
         }
