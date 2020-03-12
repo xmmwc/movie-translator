@@ -34,13 +34,13 @@ export const getValue = (name, prefix = 'movie') => {
   return Promise.resolve(null)
 }
 
-export const setValue = (name, movie, exTime = 12 * 60 * 60, prefix = 'movie') => {
+export const setValue = (name, data, exTime = 12 * 60 * 60, prefix = 'movie') => {
   if (name) {
     if (config.useCache && client) {
       const id = sha1(prefix + '_' + name)
       return new Promise((resolve, reject) => {
         try {
-          const value = JSON.stringify(movie)
+          const value = JSON.stringify(data)
           client.set(id, value, 'ex', exTime, (err, result) => {
             if (err) return reject(err)
             resolve(result)

@@ -55,10 +55,12 @@ const getTMConfigFromServer = async () => {
 }
 
 const getTMConfig = async () => {
-  const tmConf = await getValue('tmConfig')
+  const tmConf = await getValue('tmConfig', 'api')
   if (!tmConf) {
     const tmConfFromServer = await getTMConfigFromServer()
-    await setValue('tmConfig', tmConfFromServer)
+    await setValue('tmConfig', tmConfFromServer).catch(e => {
+      console.error('TMDbConfig失败:', e.message)
+    })
     return tmConfFromServer
   }
   return tmConf
@@ -83,40 +85,43 @@ const getPosterPath = async path => {
  * @returns {Promise<TMDbMovie>}
  */
 const search = async name => {
-  if (config.useCache) {
-    const movieFromCache = await getValue(name)
-    if (movieFromCache) {
-      return movieFromCache
-    }
-  }
-  try {
-    console.log('重新查询电影信息')
-    const apiKey = config.apiKey.TMDb
-    if (apiKey) {
-      const data = await io.get('search/movie', {
-        query: name,
-        language: 'zh-CN',
-        api_key: apiKey
-      })
-      if (data.total_results > 0) {
-        const movie = data.results[0]
-        if (movie) {
-          movie.poster_path = await getPosterPath(movie.poster_path)
-          if (config.useCache) {
-            await setValue(name, movie).catch(e => {
-              console.error('缓存电影失败:', e.message)
-            })
-          }
-          return movie
-        }
+  if (name) {
+    if (config.useCache) {
+      const movieFromCache = await getValue(name, 'api')
+      if (movieFromCache) {
+        return movieFromCache
       }
-      console.log('没找到电影信息')
     }
-    return null
-  } catch (e) {
-    console.log(`查询电影信息失败:${e.message}`)
-    return null
+    try {
+      console.log(`开始查询电影信息:${name}`)
+      const apiKey = config.apiKey.TMDb
+      if (apiKey) {
+        const data = await io.get('search/movie', {
+          query: name,
+          language: 'zh-CN',
+          api_key: apiKey
+        })
+        if (data.total_results > 0) {
+          const movie = data.results[0]
+          if (movie) {
+            movie.poster_path = await getPosterPath(movie.poster_path)
+            if (config.useCache) {
+              await setValue(name, movie, undefined, 'api').catch(e => {
+                console.error('缓存电影失败:', e.message)
+              })
+            }
+            return movie
+          }
+        }
+        console.log('没找到电影信息')
+      }
+      return null
+    } catch (e) {
+      console.log(`查询电影信息失败:${e.message}`)
+      return null
+    }
   }
+  return null
 }
 
 export default search
