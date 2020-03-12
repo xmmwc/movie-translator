@@ -6,12 +6,12 @@ ENV SERVER_PORT='19564'
 
 WORKDIR /app
 
-COPY package*.json .
+ADD package.json yarn.lock ./
 
 RUN yarn
 
-COPY .babelrc .
-COPY src ./src/
+ADD .babelrc .
+ADD src ./src/
 
 RUN yarn build;
 
