@@ -2,6 +2,8 @@ import Redis from 'ioredis'
 import sha1 from 'sha-1'
 import config from './config'
 
+const REDIS_PREFIX = 'movie'
+
 const host = process.env.REDIS_URL || 'localhost'
 const port = process.env.REDIS_PORT || 6379
 
@@ -17,7 +19,7 @@ if (config.useCache) {
 export const getValue = name => {
   if (name) {
     if (config.useCache && client) {
-      const id = sha1(name)
+      const id = sha1(REDIS_PREFIX + '_' + name)
       return new Promise(resolve => {
         client.get(id, (err, result) => {
           if (err) return resolve(null)
@@ -37,7 +39,7 @@ export const getValue = name => {
 export const setValue = (name, movie, exTime = 12 * 60 * 60) => {
   if (name) {
     if (config.useCache && client) {
-      const id = sha1(name)
+      const id = sha1(REDIS_PREFIX + '_' + name)
       return new Promise((resolve, reject) => {
         try {
           const value = JSON.stringify(movie)
