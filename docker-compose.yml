@@ -1,14 +1,14 @@
 version: '3'
 services:
   web:
-    build: ./
+    image: movie:1.0.13
+    container_name: movie_web
     ports:
-    - "9800:19564"   
+    - "8080:8080"
     links:
     - redis
     environment:
     - REDIS_URL=redis
-    network_mode: bridge
   redis:
     image: redis
-    network_mode: bridge
+    container_name: movie_redis

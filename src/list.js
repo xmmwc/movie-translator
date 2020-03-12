@@ -1,9 +1,44 @@
 import _ from 'lodash'
-import searchFromDouban from './search/douban'
 import searchFromTMDb from './search/TMDb'
+import decoder from './decoder'
 import config from './config'
-import decoder, { getFileName } from './decoder'
 import { list } from './source'
+
+export const getListByTMDb = () => {
+  return getListByRate().then(async movieInfo => {
+    const movieList = []
+    for (const movie of movieInfo) {
+      const subject = await searchFromTMDb(movie.name)
+      if (subject) {
+        movieList.push({
+          movie_info: movie,
+          tm_db_info: {
+            title: subject.title,
+            original_title: subject.original_title,
+            rating_average: subject.vote_average,
+            rating_star: subject.vote_count,
+            subject_year: subject.release_date,
+            image: subject.poster_path,
+            tm_id: subject.id,
+            overview: subject.overview,
+            popularity: subject.popularity
+          }
+        })
+      }
+    }
+    return movieList
+  }).then(movie => {
+    return movie.map(info => {
+      const showName = _.isUndefined(info.cn_title) ? info.origin_title : `[${info.rating_average}]${info.cn_title}`
+      return {
+        ...info,
+        show_name: showName
+      }
+    })
+  }).then(movie => {
+    return _.orderBy(movie, ['movie_info.group_rate', 'tm_db_info.rating_average'], ['desc', 'desc'])
+  })
+}
 
 export const getMovieByRate = movies => {
   const movieWithRate = movies.map(movie => {
@@ -23,78 +58,6 @@ export const getMovieByRate = movies => {
     ...topMovie.movie,
     group_rate: topMovie.rate
   }
-}
-
-export const getListByDounban = () => {
-  return getListByRate().then(movieInfo => {
-    return Promise.all(movieInfo.map(async movie => {
-      const subject = await searchFromDouban(movie.name)
-      if (subject) {
-        const filename = getFileName(movie.origin_title)
-        return {
-          ...movie,
-          cn_name: subject.title,
-          cn_title: movie.origin_title.replace(filename, subject.title),
-          rating_average: subject.rating.average,
-          rating_star: subject.rating.stars,
-          subject_year: subject.year,
-          image: subject.images,
-          douban_id: subject.id
-        }
-      } else {
-        return {
-          ...movie,
-          rating_average: 0
-        }
-      }
-    }))
-  }).then(movie => {
-    return movie.map(info => {
-      const showName = _.isUndefined(info.cn_title) ? info.origin_title : `[${info.rating_average}]${info.cn_title}`
-      return {
-        ...info,
-        show_name: showName
-      }
-    })
-  }).then(movie => {
-    return _.orderBy(movie, ['group_rate', 'rating_average'], ['desc', 'desc'])
-  })
-}
-
-export const getListByTMDb = () => {
-  return getListByRate().then(movieInfo => {
-    return Promise.all(movieInfo.map(async movie => {
-      const subject = await searchFromTMDb(movie.name)
-      if (subject) {
-        const filename = getFileName(movie.origin_title)
-        return {
-          ...movie,
-          cn_name: subject.title,
-          cn_title: movie.origin_title.replace(filename, subject.title),
-          rating_average: subject.vote_average,
-          rating_star: subject.vote_count,
-          subject_year: subject.release_date,
-          image: subject.poster_path,
-          tm_id: subject.id
-        }
-      } else {
-        return {
-          ...movie,
-          rating_average: 0
-        }
-      }
-    }))
-  }).then(movie => {
-    return movie.map(info => {
-      const showName = _.isUndefined(info.cn_title) ? info.origin_title : `[${info.rating_average}]${info.cn_title}`
-      return {
-        ...info,
-        show_name: showName
-      }
-    })
-  }).then(movie => {
-    return _.orderBy(movie, ['group_rate', 'rating_average'], ['desc', 'desc'])
-  })
 }
 
 export const getListByRate = () => {

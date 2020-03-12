@@ -14,7 +14,7 @@ if (config.useCache) {
   })
 }
 
-export const getMovie = name => {
+export const getValue = name => {
   if (name) {
     if (config.useCache && client) {
       const id = sha1(name)
@@ -34,7 +34,7 @@ export const getMovie = name => {
   return Promise.resolve(null)
 }
 
-export const setMovie = (name, movie, exTime = 12 * 60 * 60) => {
+export const setValue = (name, movie, exTime = 12 * 60 * 60) => {
   if (name) {
     if (config.useCache && client) {
       const id = sha1(name)
