@@ -1,6 +1,6 @@
 {
   "description": "movie-translator",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "scripts": {
     "start": "node dist/server.js",
     "build": "babel src -d dist",

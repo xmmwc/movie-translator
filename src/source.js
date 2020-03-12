@@ -42,7 +42,11 @@ const getToken = async () => {
   token = data.token
   tokenTime = new Date().getTime()
   console.log('重新获取token:', token, tokenTime)
-  await setValue('token', { token, tokenTime })
+  if (config.useCache) {
+    await setValue('token', { token, tokenTime }).catch(e => {
+      console.error('缓存token失败:', e.message)
+    })
+  }
   return token
 }
 
@@ -50,18 +54,30 @@ const isTokenEx = () => {
   if (token && tokenTime) {
     const now = new Date().getTime()
     const distance = tokenTime - now
-    return distance < 12 * 60 * 1000
+    return distance < 12 * 60 * 60 * 1000
   }
   return false
 }
 
 export const list = async () => {
+  if (config.useCache) {
+    const cachedList = await getValue('movie_list')
+    if (cachedList) {
+      return cachedList
+    }
+  }
   await loadTokenCache()
   return apiGet({
     mode: 'list',
     category: '42;46;44',
     min_leechers: 100
-  }).then(data => {
-    return data.torrent_results
+  }).then(async data => {
+    const movieList = data.torrent_results
+    if (config.useCache && movieList.length > 0) {
+      await setValue('movie_list', movieList).catch(e => {
+        console.error('缓存电影列表失败:', e.message)
+      })
+    }
+    return movieList
   })
 }
