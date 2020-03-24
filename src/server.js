@@ -9,7 +9,7 @@ const port = process.env.SERVER_PORT || 19564
 app.get('/list', (req, res, next) => {
   getListByTMDb()
     .then(movie => {
-      res.json({
+      res.jsonp({
         data: movie,
         code: 1
       })
