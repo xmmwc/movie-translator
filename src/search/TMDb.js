@@ -3,6 +3,7 @@ import config from '../config'
 import { getValue, setValue } from '../storage'
 
 const io = ioFactory('https://api.themoviedb.org/3/', true)
+const posterSizeIndex = parseInt(process.env.POSTER_SIZE_INDEX) || 4
 
 /**
  * @typedef TMDbConfiguration
@@ -71,7 +72,7 @@ const getPosterPath = async path => {
   if (tmConf) {
     const images = tmConf.images
     const sizeLength = images.poster_sizes.length
-    const posterSize = sizeLength > 2 ? images.poster_sizes[sizeLength - 2] : null
+    const posterSize = sizeLength > posterSizeIndex ? images.poster_sizes[posterSizeIndex] : null
     if (posterSize) {
       return `${images.base_url}${posterSize}${path}`
     }

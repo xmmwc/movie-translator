@@ -4,6 +4,7 @@ import config from './config'
 
 const host = process.env.REDIS_URL || 'localhost'
 const port = process.env.REDIS_PORT || 6379
+const ex = parseInt(process.env.REDIS_EX_TIME) || 12 * 60 * 60
 
 let client = null
 if (config.useCache) {
@@ -34,7 +35,7 @@ export const getValue = (name, prefix = 'movie') => {
   return Promise.resolve(null)
 }
 
-export const setValue = (name, data, exTime = 12 * 60 * 60, prefix = 'movie') => {
+export const setValue = (name, data, exTime = ex, prefix = 'movie') => {
   if (name) {
     if (config.useCache && client) {
       const id = sha1(prefix + '_' + name)
