@@ -43,7 +43,7 @@ const getToken = async () => {
   tokenTime = new Date().getTime()
   console.log('重新获取token:', token, tokenTime)
   if (config.useCache) {
-    await setValue('token', { token, tokenTime }).catch(e => {
+    await setValue('token', { token, tokenTime }, 12 * 60 * 60).catch(e => {
       console.error('缓存token失败:', e.message)
     })
   }

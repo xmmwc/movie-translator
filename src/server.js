@@ -1,9 +1,9 @@
 
 import express from 'express'
+import refresh from './refresh'
 import { getListByTMDb } from './list'
 
 const app = express()
-
 const port = process.env.SERVER_PORT || 19564
 
 app.get('/list', (req, res, next) => {
@@ -30,4 +30,5 @@ app.use((err, req, res, next) => {
 
 app.listen(port, () => {
   console.log(`服务已启动[${port}]`)
+  refresh()
 })
