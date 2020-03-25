@@ -3,19 +3,19 @@ const isYear = keyword => {
   return match.test(keyword)
 }
 const isQuality = keyword => {
-  return ['brrip', 'bluray', 'web', 'hdrip', 'webrip'].indexOf(keyword) >= 0
+  return ['brrip', 'bluray', 'web', 'hdrip', 'webrip', 'remux', 'amzn'].indexOf(keyword) >= 0
 }
 
 const isRes = keyword => {
-  return ['1080p', '720p'].indexOf(keyword) >= 0
+  return ['2160p', '1080p', '720p'].indexOf(keyword) >= 0
 }
 
 const isCodec = keyword => {
-  return ['xvid', 'x264', 'h264', 'avc'].indexOf(keyword) >= 0
+  return ['xvid', 'x264', 'h264', 'avc', 'hevc'].indexOf(keyword) >= 0
 }
 
 const isSound = keyword => {
-  return ['dd5', 'mp3', 'ac3', 'dts', 'acc', 'acc2', 'ddp5', 'aac2', 'aac'].indexOf(keyword) >= 0
+  return ['dd5', 'mp3', 'ac3', 'dts', 'acc', 'acc2', 'ddp5', 'aac2', 'aac', 'atmos'].indexOf(keyword) >= 0
 }
 
 const isSoundNeedNext = keyword => {
