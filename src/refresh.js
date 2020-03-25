@@ -1,6 +1,6 @@
 import { getListByTMDb } from './list'
 
-const refreshAfter = parseInt(process.env.REDIS_EX_TIME) || 0
+const refreshAfter = parseInt(process.env.SOURCE_EX_TIME) || 0
 let timer = null
 
 const setRefresh = () => {

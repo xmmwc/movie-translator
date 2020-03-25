@@ -2,6 +2,8 @@ import ioFactory from './io'
 import { setValue, getValue } from './storage'
 import config from './config'
 
+const SOURCE_EX_TIME = parseInt(process.env.SOURCE_EX_TIME) || 2 * 60 * 60
+const TOKEN_EX_TIME = 12 * 60 * 60
 const io = ioFactory('https://torrentapi.org')
 const appId = 'xmmmovie'
 let token = null
@@ -43,7 +45,7 @@ const getToken = async () => {
   tokenTime = new Date().getTime()
   console.log('重新获取token:', token, tokenTime)
   if (config.useCache) {
-    await setValue('token', { token, tokenTime }, 12 * 60 * 60).catch(e => {
+    await setValue('token', { token, tokenTime }, TOKEN_EX_TIME).catch(e => {
       console.error('缓存token失败:', e.message)
     })
   }
@@ -54,7 +56,7 @@ const isTokenEx = () => {
   if (token && tokenTime) {
     const now = new Date().getTime()
     const distance = tokenTime - now
-    return distance < 12 * 60 * 60 * 1000
+    return distance < TOKEN_EX_TIME * 1000
   }
   return false
 }
@@ -75,7 +77,7 @@ export const list = async () => {
   }).then(async data => {
     const movieList = data.torrent_results
     if (config.useCache && movieList.length > 0) {
-      await setValue('movie_list', movieList, undefined, 'api').catch(e => {
+      await setValue('movie_list', movieList, SOURCE_EX_TIME, 'api').catch(e => {
         console.error('缓存电影列表失败:', e.message)
       })
     }

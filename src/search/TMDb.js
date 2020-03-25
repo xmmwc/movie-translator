@@ -2,8 +2,10 @@ import ioFactory from '../io'
 import config from '../config'
 import { getValue, setValue } from '../storage'
 
+const TMDB_EX_TIME = 24 * 60 * 60
 const io = ioFactory('https://api.themoviedb.org/3/', true)
 const posterSizeIndex = parseInt(process.env.POSTER_SIZE_INDEX) || 4
+
 
 /**
  * @typedef TMDbConfiguration
@@ -59,7 +61,7 @@ const getTMConfig = async () => {
   const tmConf = await getValue('tmConfig', 'api')
   if (!tmConf) {
     const tmConfFromServer = await getTMConfigFromServer()
-    await setValue('tmConfig', tmConfFromServer).catch(e => {
+    await setValue('tmConfig', tmConfFromServer, TMDB_EX_TIME).catch(e => {
       console.error('TMDbConfig失败:', e.message)
     })
     return tmConfFromServer
@@ -107,7 +109,7 @@ const search = async name => {
           if (movie) {
             movie.poster_path = await getPosterPath(movie.poster_path)
             if (config.useCache) {
-              await setValue(name, movie, undefined, 'api').catch(e => {
+              await setValue(name, movie, TMDB_EX_TIME, 'api').catch(e => {
                 console.error('缓存电影失败:', e.message)
               })
             }

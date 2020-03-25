@@ -7,11 +7,11 @@ import { list } from './source'
 export const getListByTMDb = () => {
   return getListByRate().then(async movieInfo => {
     const movieList = []
-    for (const movie of movieInfo) {
-      const subject = await searchFromTMDb(movie.name)
+    for (const info of movieInfo) {
+      const subject = await searchFromTMDb(info.name)
       if (subject) {
         movieList.push({
-          movie_info: movie,
+          movie_info: info.movies,
           tm_db_info: {
             title: subject.title,
             original_title: subject.original_title,
@@ -36,7 +36,7 @@ export const getListByTMDb = () => {
       }
     })
   }).then(movie => {
-    return _.orderBy(movie, ['movie_info.group_rate', 'tm_db_info.rating_average'], ['desc', 'desc'])
+    return _.orderBy(movie, ['movie_info.length', 'tm_db_info.rating_average'], ['desc', 'desc'])
   })
 }
 
@@ -53,11 +53,8 @@ export const getMovieByRate = movies => {
       movie
     }
   })
-  const topMovie = _.maxBy(movieWithRate, movie => movie.rate)
-  return {
-    ...topMovie.movie,
-    group_rate: topMovie.rate
-  }
+  const sortedRateMovie = _.orderBy(movieWithRate, info => info.rate, 'desc')
+  return sortedRateMovie.map(info => info.movie)
 }
 
 export const getListByRate = () => {
@@ -75,7 +72,10 @@ export const getListByRate = () => {
       const groupedMovies = _.groupBy(movieList, movie => movie.name)
       return Object.keys(groupedMovies).map(key => {
         const movieShop = groupedMovies[key]
-        return getMovieByRate(movieShop)
+        return {
+          name: key,
+          movies: getMovieByRate(movieShop)
+        }
       })
     })
 }
