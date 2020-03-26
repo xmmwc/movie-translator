@@ -14,7 +14,7 @@ const setRefresh = () => {
     setTimeout(() => {
       const now = Date.now()
       console.log(`${now}:开始自动刷新接口`)
-      getListByTMDb.then(() => {
+      getListByTMDb().then(() => {
         setRefresh()
       }).catch(() => {
         setRefresh()

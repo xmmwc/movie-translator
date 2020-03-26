@@ -15,11 +15,11 @@ const isCodec = keyword => {
 }
 
 const isSound = keyword => {
-  return ['dd5', 'mp3', 'ac3', 'dts', 'acc', 'acc2', 'ddp5', 'aac2', 'aac', 'atmos'].indexOf(keyword) >= 0
+  return ['dd5', 'mp3', 'ac3', 'dts', 'acc', 'acc2', 'ddp5', 'aac2', 'aac', 'truehd', 'atmos', '5', '7'].indexOf(keyword) >= 0
 }
 
 const isSoundNeedNext = keyword => {
-  return ['dd5', 'dts', 'hd', 'ma', 'acc2', 'aac2', 'ddp5', '5', '7'].indexOf(keyword) >= 0 ? 'sound' : null
+  return ['dd5', 'dts', 'hd', 'acc2', 'aac2', 'ddp5', '5', '7'].indexOf(keyword) >= 0 ? 'sound' : null
 }
 const isQualityNeedNext = keyword => {
   return ['web'].indexOf(keyword) >= 0 ? 'quality' : null
@@ -45,7 +45,15 @@ export const getFileName = name => {
 
 const collectInfo = name => {
   const nameSplit = name.replace(/-/g, '.').split('.') || []
-  const info = {}
+  const info = {
+    name: '',
+    year: '',
+    quality: [],
+    sound: [],
+    codec: [],
+    res: '',
+    author: ''
+  }
   let needNext = null
   let nameDone = false
 
@@ -61,14 +69,6 @@ const collectInfo = name => {
       continue
     }
 
-    // 是清晰度
-    if (isQuality(lowercaseKeyword)) {
-      info.quality = lowercaseKeyword
-      needNext = isQualityNeedNext(lowercaseKeyword)
-      nameDone = true
-      continue
-    }
-
     // 是资源规格
     if (isRes(lowercaseKeyword)) {
       info.res = lowercaseKeyword
@@ -77,9 +77,17 @@ const collectInfo = name => {
       continue
     }
 
+    // 是清晰度
+    if (isQuality(lowercaseKeyword)) {
+      info.quality.push(lowercaseKeyword)
+      needNext = isQualityNeedNext(lowercaseKeyword)
+      nameDone = true
+      continue
+    }
+
     // 是声音信息
     if (isSound(lowercaseKeyword)) {
-      info.sound = lowercaseKeyword
+      info.sound.push(lowercaseKeyword)
       needNext = isSoundNeedNext(lowercaseKeyword)
       nameDone = true
       continue
@@ -87,9 +95,15 @@ const collectInfo = name => {
 
     // 是编码格式
     if (isCodec(lowercaseKeyword)) {
-      info.codec = lowercaseKeyword
+      info.codec.push(lowercaseKeyword)
       needNext = null
       nameDone = true
+      continue
+    }
+
+    if (isLast) {
+      info.author = lowercaseKeyword
+      needNext = null
       continue
     }
 
@@ -97,18 +111,21 @@ const collectInfo = name => {
     if (needNext) {
       switch (needNext) {
         case 'sound':
-          if (/[0|1]/.test(lowercaseKeyword)) {
-            info.sound += `.${lowercaseKeyword}`
-          } else if (/hd/.test(lowercaseKeyword)) {
-            info.sound += `-${lowercaseKeyword}`
-          } else {
-            info.sound += ` ${lowercaseKeyword}`
+          const soundLastIndex = info.sound.length - 1
+          if (soundLastIndex >= 0) {
+            if (/[0|1]/.test(lowercaseKeyword)) {
+              info.sound[soundLastIndex] += `.${lowercaseKeyword}`
+            } else if (/^hd/.test(lowercaseKeyword)) {
+              info.sound[soundLastIndex] += `-${lowercaseKeyword}`
+            } else if (/^ma$/.test(lowercaseKeyword)) {
+              info.sound[soundLastIndex] += ` ${lowercaseKeyword}`
+            }
           }
-
           needNext = isSoundNeedNext(lowercaseKeyword)
           break
         case 'quality':
-          info.quality += `-${lowercaseKeyword}`
+          const qualityLastIndex = info.quality.length - 1
+          info.quality[qualityLastIndex] += `-${lowercaseKeyword}`
           needNext = isQualityNeedNext(lowercaseKeyword)
           break
         case 'name':
@@ -116,15 +133,12 @@ const collectInfo = name => {
           needNext = 'name'
           break
         default: needNext = null
+          break
       }
-
       continue
     }
 
-    if (isLast) {
-      info.author = lowercaseKeyword
-      needNext = null
-    } else if (!nameDone) {
+    if (!nameDone) {
       info.name = lowercaseKeyword
       needNext = 'name'
     }

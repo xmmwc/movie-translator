@@ -6,7 +6,6 @@ const TMDB_EX_TIME = 24 * 60 * 60
 const io = ioFactory('https://api.themoviedb.org/3/', true)
 const posterSizeIndex = parseInt(process.env.POSTER_SIZE_INDEX) || 4
 
-
 /**
  * @typedef TMDbConfiguration
  * @property images {object}
@@ -116,11 +115,11 @@ const search = async name => {
             return movie
           }
         }
-        console.log('没找到电影信息')
+        console.log(`没找到电影信息:${name}`)
       }
       return null
     } catch (e) {
-      console.log(`查询电影信息失败:${e.message}`)
+      console.log(`查询电影信息失败[${name}]:${e.message}`)
       return null
     }
   }
