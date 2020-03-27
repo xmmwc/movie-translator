@@ -2,16 +2,39 @@ import _ from 'lodash'
 import searchFromTMDb from './search/TMDb'
 import decoder from './decoder'
 import config from './config'
+import { getMagnet } from 'magnet'
 import { list } from './source'
+import { getValue, setValue } from './storage'
+
+const TrackerExTime = 24 * 60 * 60
+
+const addTrackers = async (movieList) => {
+  for (const movie of movieList) {
+    movie.link = await getMagnet(movie.link, undefined, undefined, {
+      getTracker: async () => {
+        const trackers = await getValue('trackers', 'api')
+        return trackers || { list: [], time: 0 }
+      },
+      saveTracker: (list) => {
+        return setValue('trackers', list, TrackerExTime, 'api').catch(e => {
+          console.error('缓存trackers失败:', e.message)
+        })
+      },
+      replaceTracker: true
+    })
+  }
+  return movieList
+}
 
 export const getListByTMDb = () => {
   return getListByRate().then(async movieInfo => {
     const movieList = []
     for (const info of movieInfo) {
       const subject = await searchFromTMDb(info.name)
+      const movie = await addTrackers(info.movies)
       if (subject) {
         movieList.push({
-          movie_info: info.movies,
+          movie_info: movie,
           tm_db_info: {
             title: subject.title,
             original_title: subject.original_title,
