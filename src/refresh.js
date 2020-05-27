@@ -6,14 +6,14 @@ let timer = null
 const setRefresh = () => {
   if (refreshAfter > 0) {
     const waitTime = refreshAfter * 1000 + 2000
-    console.log(`设置自动 ${waitTime}ms 后自动刷新接口`)
+    console.log(`设置自动 ${waitTime}ms 后自动刷新接口\n`)
     if (timer) {
       clearTimeout(timer)
       timer = null
     }
     setTimeout(() => {
-      const now = Date.now()
-      console.log(`${now}:开始自动刷新接口`)
+      const now = new Date().toLocaleString()
+      console.log(`\n${now}: 开始自动刷新接口`)
       getListByTMDb().then(() => {
         setRefresh()
       }).catch(() => {
