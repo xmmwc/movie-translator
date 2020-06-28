@@ -33,9 +33,7 @@ const apiGet = async (param = {}) => {
         console.log(`第${retryTime}次重试...`)
         return apiGet(param)
       } else {
-        return {
-          torrent_results: []
-        }
+        throw new Error(data.error)
       }
     }
     console.log(`成功查询到${data.torrent_results.length}条电影记录！`)
