@@ -4,10 +4,13 @@ import config from './config'
 
 const SOURCE_EX_TIME = parseInt(process.env.SOURCE_EX_TIME) || 2 * 60 * 60
 const TOKEN_EX_TIME = 12 * 60 * 60
+const MAX_RETRY_TIME = 5
 const io = ioFactory('https://torrentapi.org')
 const appId = 'xmmmovie'
+
 let token = null
 let tokenTime = null
+let retryTime = 0
 
 const loadTokenCache = async () => {
   if (config.useCache) {
@@ -25,11 +28,18 @@ const apiGet = async (param = {}) => {
     const data = await io.get('/pubapi_v2.php', { ...param, token, app_id: appId })
     if (data.error || data.error_code === 4 || !data.torrent_results) {
       console.warn(`获取电影失败:${data.error}`)
-      return {
-        torrent_results: []
+      if (retryTime < MAX_RETRY_TIME) {
+        retryTime++
+        console.log(`第${retryTime}次重试...`)
+        return apiGet(param)
+      } else {
+        return {
+          torrent_results: []
+        }
       }
     }
     console.log(`成功查询到${data.torrent_results.length}条电影记录！`)
+    retryTime = 0
     return data
   }
   console.log('token超时！')
