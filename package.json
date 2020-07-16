@@ -19,7 +19,7 @@
     "axios": "^0.19.2",
     "express": "^4.17.1",
     "ioredis": "^4.16.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "magnet": "https://github.com/xmmwc/magnet/releases/download/1.2.5/magnet-v1.2.5.tgz",
     "sha-1": "^0.1.1",
     "socks-proxy-agent": "^5.0.0"
