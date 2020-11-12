@@ -89,6 +89,11 @@ const getPosterPath = async path => {
 const search = async name => {
   if (name) {
     if (config.useCache) {
+      const movieIsFail = await getValue(name, 'api_fail_movie')
+      if (movieIsFail === '1') {
+        console.log('从缓存查询到确实电影信息，忽略:', name)
+        return null
+      }
       const movieFromCache = await getValue(name, 'api')
       if (movieFromCache) {
         return movieFromCache
@@ -116,6 +121,11 @@ const search = async name => {
           }
         }
         console.log(`没找到电影信息:${name}`)
+        if (config.useCache) {
+          await setValue(name, '1', TMDB_EX_TIME, 'api_fail_movie').catch(e => {
+            console.log('记录没找到的电影名称:', name)
+          })
+        }
       }
       return null
     } catch (e) {
