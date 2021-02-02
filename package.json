@@ -16,11 +16,11 @@
     "debug": "^4.0.1"
   },
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "express": "^4.17.1",
     "ioredis": "^4.16.0",
-    "lodash": "^4.17.15",
-    "magnet": "https://github.com/xmmwc/magnet/releases/download/1.2.5/magnet-v1.2.5.tgz",
+    "lodash": "^4.17.20",
+    "magnet": "https://github.com/xmmwc/magnet/releases/download/v1.3.2/magnet-v1.3.2.tgz",
     "sha-1": "^0.1.1",
     "socks-proxy-agent": "^5.0.0"
   },
