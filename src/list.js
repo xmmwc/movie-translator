@@ -49,6 +49,7 @@ export const getListByTMDb = () => {
         })
       }
     }
+    console.log(`电影列表全部查询成功:共${movieList.length}部电影`)
     return movieList
   }).then(movie => {
     return movie.map(info => {
