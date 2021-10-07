@@ -91,11 +91,12 @@ const search = async name => {
     if (config.useCache) {
       const movieIsFail = await getValue(name, 'api_fail_movie')
       if (movieIsFail === '1') {
-        console.log('从缓存查询到确实电影信息，忽略:', name)
+        console.log('缓存记录过电影未查询到，忽略:', name)
         return null
       }
       const movieFromCache = await getValue(name, 'api')
       if (movieFromCache) {
+        console.log('从缓存查询到电影信息，忽略:', name)
         return movieFromCache
       }
     }
@@ -117,6 +118,7 @@ const search = async name => {
                 console.error('缓存电影失败:', e.message)
               })
             }
+            console.log(`查询电影信息成功:${name}`)
             return movie
           }
         }

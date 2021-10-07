@@ -24,7 +24,7 @@ const loadTokenCache = async () => {
 
 const apiGet = async (param = {}) => {
   if (isTokenEx()) {
-    console.log('开始获取电影！')
+    console.log('\n开始获取电影！')
     const data = await io.get('/pubapi_v2.php', { ...param, token, app_id: appId })
     if (data.error || data.error_code === 4 || !data.torrent_results) {
       console.warn(`获取电影失败:${data.error}`)
@@ -73,6 +73,7 @@ export const list = async () => {
   if (config.useCache) {
     const cachedList = await getValue('movie_list', 'api')
     if (cachedList) {
+      console.log('读取缓存电影列表成功！')
       return cachedList
     }
   }

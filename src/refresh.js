@@ -1,28 +1,22 @@
 import { getListByTMDb } from './list'
+import { scheduleJob } from 'node-schedule'
+import { addSeconds, format } from 'date-fns'
 
-const refreshAfter = parseInt(process.env.SOURCE_EX_TIME) || 0
-let timer = null
-
-const setRefresh = () => {
-  if (refreshAfter > 0) {
-    const waitTime = refreshAfter * 1000 + 2000
-    console.log(`设置自动 ${waitTime}ms 后自动刷新接口\n`)
-    if (timer) {
-      clearTimeout(timer)
-      timer = null
-    }
-    setTimeout(() => {
-      const now = new Date().toLocaleString()
-      console.log(`\n${now}: 开始自动刷新接口`)
-      getListByTMDb().then(() => {
-        setRefresh()
-      }).catch(() => {
-        setRefresh()
-      })
-    }, waitTime)
-  } else {
-    console.warn('忽略刷新时间，刷新接口任务设置失败')
+const setSchedule = (date) => {
+  if (!date) {
+    date = new Date()
   }
+  const refreshSeconds = +process.env.REFRESH_TIME
+  const next = addSeconds(date, refreshSeconds)
+  scheduleJob(next, () => {
+    const now = new Date()
+    const nowStr = format(now, 'yyyy-MM-dd HH:mm:ss')
+    setSchedule(now)
+    console.log(`\n开始自动刷新接口: ${nowStr}`)
+    getListByTMDb().catch((err) => {
+      console.error(`查询失败：${err.message}`)
+    })
+  })
 }
 
-export default setRefresh
+export default setSchedule
