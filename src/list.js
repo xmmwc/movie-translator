@@ -85,11 +85,11 @@ export const getListByRate = () => {
   return list()
     .then(data => {
       return data.map(movie => {
-        const info = decoder(movie.filename || '')
+        const info = decoder(movie.title || '')
         return {
           ...info,
-          origin_title: movie.filename,
-          link: movie.download
+          origin_title: movie.title,
+          link: movie.magnet
         }
       })
     }).then(movieList => {

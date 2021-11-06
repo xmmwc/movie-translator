@@ -25,7 +25,8 @@
     "magnet": "https://github.com/xmmwc/magnet/releases/download/v1.3.2/magnet-v1.3.2.tgz",
     "node-schedule": "^2.0.0",
     "sha-1": "^0.1.1",
-    "socks-proxy-agent": "^5.0.0"
+    "socks-proxy-agent": "^5.0.0",
+    "torrent-search-api": "^2.1.4"
   },
   "license": "MIT"
 }
