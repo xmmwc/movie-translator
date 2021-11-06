@@ -21,7 +21,7 @@
     "date-fns": "^2.19.0",
     "express": "^4.17.1",
     "ioredis": "^4.16.0",
-    "lodash": "^4.17.20",
+    "lodash": "^4.17.21",
     "magnet": "https://github.com/xmmwc/magnet/releases/download/v1.3.2/magnet-v1.3.2.tgz",
     "node-schedule": "^2.0.0",
     "sha-1": "^0.1.1",
