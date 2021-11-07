@@ -32,7 +32,7 @@ TorrentSearchApi.enableProvider('Torrent9')
 TorrentSearchApi.enableProvider('Rarbg')
 
 export const searchPublicTorrents = async () => {
-    const torrents = await TorrentSearchApi.search(['Rarbg'], '1080', 'TopMovies', SEARCH_LIMIT)
+    const torrents = await TorrentSearchApi.search(['1337x', 'Torrent9', 'Rarbg'], '1080', 'TopMovies', SEARCH_LIMIT)
     const movies = await Promise.all(torrents.map(async (torrent) => {
         const magnet = await TorrentSearchApi.getMagnet(torrent)
         return {
