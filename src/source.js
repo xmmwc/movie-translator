@@ -3,16 +3,8 @@ import { setValue, getValue } from './storage'
 import config from './config'
 
 const SOURCE_EX_TIME = parseInt(process.env.SOURCE_EX_TIME) || 2 * 60 * 60
-// const TOKEN_EX_TIME = 12 * 60 * 60
-// const MAX_RETRY_TIME = 5
-// const io = ioFactory('https://torrentapi.org')
-// const appId = 'xmmmovie'
-
-// let token = null
-// let tokenTime = null
-// let retryTime = 0
-
-TorrentSearchApi.enablePublicProviders()
+const SEARCH_LIMIT = Number(process.env.SEARCH_LIMIT) || 100
+const RARBG_APPID = 'rarbg_id' + new Date().getTime().toString()
 
 TorrentSearchApi.overrideConfig('1337x', {
     categories: {
@@ -27,13 +19,20 @@ TorrentSearchApi.overrideConfig('Torrent9', {
 })
 
 TorrentSearchApi.overrideConfig('Rarbg', {
+    getTokenUrl: `/pubapi_v2.php?get_token=get_token&app_id=${RARBG_APPID}`,
+    searchUrl: `/pubapi_v2.php?app_id=${RARBG_APPID}&category={cat}&mode=list&format=json_extended&sort=seeders&min_leechers=100&token=`,
     categories: {
         TopMovies: '42;46;44'
     }
 })
 
+
+TorrentSearchApi.enableProvider('1337x')
+TorrentSearchApi.enableProvider('Torrent9')
+TorrentSearchApi.enableProvider('Rarbg')
+
 export const searchPublicTorrents = async () => {
-    const torrents = await TorrentSearchApi.search(['1337x', 'Torrent9', 'Rarbg'], '1080', 'TopMovies', 50)
+    const torrents = await TorrentSearchApi.search(['Rarbg'], '1080', 'TopMovies', SEARCH_LIMIT)
     const movies = await Promise.all(torrents.map(async (torrent) => {
         const magnet = await TorrentSearchApi.getMagnet(torrent)
         return {
