@@ -37,6 +37,7 @@ const setProvider = () => {
 }
 
 export const searchPublicTorrents = async () => {
+    console.log('开始查询电影条目')
     setProvider()
     const torrents = await TorrentSearchApi.search(['1337x', 'Torrent9', 'Rarbg'], '1080', 'TopMovies', SEARCH_LIMIT)
     const movies = await Promise.all(torrents.map(async (torrent) => {
@@ -46,6 +47,8 @@ export const searchPublicTorrents = async () => {
             magnet
         }
     }))
+
+    console.log(`查询到原始电影条目 ${movies.length} 条`)
     return movies
 }
 
@@ -53,7 +56,7 @@ export const searchPublicTorrents = async () => {
 export const list = async () => {
     if (config.useCache) {
         const cachedList = await getValue('movie_list', 'api')
-        if (cachedList) {
+        if (cachedList && cachedList.length > 0) {
             console.log('读取缓存电影列表成功！')
             return cachedList
         }
