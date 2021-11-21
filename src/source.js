@@ -4,34 +4,40 @@ import config from './config'
 
 const SOURCE_EX_TIME = parseInt(process.env.SOURCE_EX_TIME) || 2 * 60 * 60
 const SEARCH_LIMIT = Number(process.env.SEARCH_LIMIT) || 100
-const RARBG_APPID = 'rarbg_id' + new Date().getTime().toString()
 
-TorrentSearchApi.overrideConfig('1337x', {
-    categories: {
-        TopMovies: 'url:/top-100-movies'
-    }
-})
+const setProvider = () => {
+    const RARBG_APPID = 'rarbg_id' + new Date().getTime().toString()
 
-TorrentSearchApi.overrideConfig('Torrent9', {
-    categories: {
-        TopMovies: 'url:/torrents/films'
-    }
-})
+    TorrentSearchApi.overrideConfig('1337x', {
+        categories: {
+            TopMovies: 'url:/top-100-movies'
+        }
+    })
 
-TorrentSearchApi.overrideConfig('Rarbg', {
-    getTokenUrl: `/pubapi_v2.php?get_token=get_token&app_id=${RARBG_APPID}`,
-    searchUrl: `/pubapi_v2.php?app_id=${RARBG_APPID}&category={cat}&mode=list&format=json_extended&sort=seeders&min_leechers=100&token=`,
-    categories: {
-        TopMovies: '42;46;44'
-    }
-})
+    TorrentSearchApi.overrideConfig('Torrent9', {
+        categories: {
+            TopMovies: 'url:/torrents/films'
+        }
+    })
+
+    TorrentSearchApi.overrideConfig('Rarbg', {
+        getTokenUrl: `/pubapi_v2.php?get_token=get_token&app_id=${RARBG_APPID}`,
+        searchUrl: `/pubapi_v2.php?app_id=${RARBG_APPID}&category={cat}&mode=list&format=json_extended&sort=seeders&min_leechers=100&token=`,
+        categories: {
+            TopMovies: '42;46;44'
+        },
+        lastLoginTime: null
+    })
 
 
-TorrentSearchApi.enableProvider('1337x')
-TorrentSearchApi.enableProvider('Torrent9')
-TorrentSearchApi.enableProvider('Rarbg')
+    TorrentSearchApi.enableProvider('1337x')
+    TorrentSearchApi.enableProvider('Torrent9')
+    TorrentSearchApi.enableProvider('Rarbg')
+
+}
 
 export const searchPublicTorrents = async () => {
+    setProvider()
     const torrents = await TorrentSearchApi.search(['1337x', 'Torrent9', 'Rarbg'], '1080', 'TopMovies', SEARCH_LIMIT)
     const movies = await Promise.all(torrents.map(async (torrent) => {
         const magnet = await TorrentSearchApi.getMagnet(torrent)
