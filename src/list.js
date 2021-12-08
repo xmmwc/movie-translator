@@ -10,18 +10,22 @@ const TrackerExTime = 24 * 60 * 60
 
 const addTrackers = async (movieList) => {
     for (const movie of movieList) {
-        movie.link = await getMagnet(movie.link, undefined, undefined, {
-            getTracker: async () => {
-                const trackers = await getValue('trackers', 'api')
-                return trackers || { list: [], time: 0 }
-            },
-            saveTracker: (list) => {
-                return setValue('trackers', list, TrackerExTime, 'api').catch(e => {
-                    console.error('缓存trackers失败:', e.message)
-                })
-            },
-            replaceTracker: true
-        })
+        try {
+            movie.link = await getMagnet(movie.link, undefined, undefined, {
+                getTracker: async () => {
+                    const trackers = await getValue('trackers', 'api')
+                    return trackers || { list: [], time: 0 }
+                },
+                saveTracker: (list) => {
+                    return setValue('trackers', list, TrackerExTime, 'api').catch(e => {
+                        console.error('缓存trackers失败:', e.message)
+                    })
+                },
+                replaceTracker: true
+            })
+        } catch (err) {
+            console.warn(`替换magnet失败: ${err.message} - ${movie.link}`)
+        }
     }
     return movieList
 }
