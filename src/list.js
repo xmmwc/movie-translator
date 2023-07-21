@@ -78,7 +78,7 @@ export const getListByTMDb = () => {
             }
         })
     }).then(movies => {
-        return _.orderBy(movies, ['rate_index', 'movie_info.length', 'tm_db_info.rating_average'], ['desc', 'desc', 'desc'])
+        return _.orderBy(movies, ['rate_index', 'movie_info.length', 'tm_db_info.rating_average'], ['asc', 'desc', 'desc'])
     })
 }
 
