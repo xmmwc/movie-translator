@@ -57,7 +57,7 @@ export const getListByTMDb = () => {
         console.log(`电影列表全部查询成功:共${movieList.length}部电影`)
         return movieList
     }).then((movies) => {
-        const groupedMovies = _.groupBy(movies, movie => movie.tm_db_info.subject.title)
+        const groupedMovies = _.groupBy(movies, movie => movie.tm_db_info.title)
         return Object.keys(groupedMovies).map((key) => {
             const movie = groupedMovies[key]
             return {
