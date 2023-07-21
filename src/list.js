@@ -33,16 +33,17 @@ const addTrackers = async (movieList) => {
 export const getListByTMDb = () => {
     return getListByRate().then(async movieInfo => {
         const movieList = []
-        for (const info of movieInfo) {
+        for (const [idx, info] of movieInfo.entries()) {
             const subject = await searchFromTMDb(info.name)
             const movie = await addTrackers(info.movies)
             if (subject) {
                 movieList.push({
+                    rate_index: idx,
                     movie_info: movie,
                     tm_db_info: {
                         title: subject.title,
                         original_title: subject.original_title,
-                        rating_average: subject.vote_average,
+                        rating_average: subject.vote_average.toFixed(1),
                         rating_star: subject.vote_count,
                         subject_year: subject.release_date,
                         image: subject.poster_path,
@@ -55,16 +56,29 @@ export const getListByTMDb = () => {
         }
         console.log(`电影列表全部查询成功:共${movieList.length}部电影`)
         return movieList
-    }).then(movie => {
-        return movie.map(info => {
+    }).then((movies) => {
+        const groupedMovies = _.groupBy(movies, movie => movie.tm_db_info.subject.title)
+        return Object.keys(groupedMovies).map((key) => {
+            const movie = groupedMovies[key]
+            return {
+                rate_index: movie[0].rate_index,
+                movie_info: movie.reduce((totalMovie, current) => {
+                    totalMovie.push(...current.movie_info)
+                    return totalMovie
+                }, []),
+                tm_db_info: movie[0].tm_db_info
+            }
+        })
+    }).then(movies => {
+        return movies.map(info => {
             const showName = _.isUndefined(info.cn_title) ? info.origin_title : `[${info.rating_average}]${info.cn_title}`
             return {
                 ...info,
                 show_name: showName
             }
         })
-    }).then(movie => {
-        return _.orderBy(movie, ['movie_info.length', 'tm_db_info.rating_average'], ['desc', 'desc'])
+    }).then(movies => {
+        return _.orderBy(movies, ['rate_index', 'movie_info.length', 'tm_db_info.rating_average'], ['desc', 'desc', 'desc'])
     })
 }
 
