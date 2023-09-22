@@ -30,6 +30,16 @@ const addTrackers = async (movieList) => {
     return movieList
 }
 
+export const formateVote = (vote) => {
+    if (typeof vote === 'number') {
+        return vote.toFixed(1)
+    }
+    if (typeof vote === 'string') {
+        return vote
+    }
+    return 0
+}
+
 export const getListByTMDb = () => {
     return getListByRate().then(async movieInfo => {
         const movieList = []
@@ -43,7 +53,7 @@ export const getListByTMDb = () => {
                     tm_db_info: {
                         title: subject.title,
                         original_title: subject.original_title,
-                        rating_average: subject.vote_average.toFixed(1),
+                        rating_average: formateVote(subject.vote_average),
                         rating_star: subject.vote_count,
                         subject_year: subject.release_date,
                         image: subject.poster_path,
